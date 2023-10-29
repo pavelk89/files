@@ -1,36 +1,29 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <sstream>
 
 int main() {
     // Открытие файла для чтения
-    std::ifstream inFile("input.txt");
+    std::ifstream sourceFile("source.txt");
+    // Открытие файла для записи
+    std::ofstream destinationFile("destination.txt");
 
-    // Проверка, успешно ли открылся файл
-    if (inFile.is_open()) {
+    // Проверка, успешно ли открылись файлы для чтения и записи
+    if (sourceFile.is_open() && destinationFile.is_open()) {
         std::string line;
-        int wordCount = 0;
-
-        // Чтение строки из файла
-        while (std::getline(inFile, line)) {
-            std::istringstream iss(line);
-            std::string word;
-
-            // Разделение строки на слова
-            while (iss >> word) {
-                wordCount++;
-            }
+        // Чтение строки из исходного файла
+        while (std::getline(sourceFile, line)) {
+            // Запись строки в файл-назначение с добавлением символа новой строки
+            destinationFile << line << std::endl;
         }
-
-        // Вывод количества слов
-        std::cout << "Количество слов в файле: " << wordCount << std::endl;
-
-        // Закрытие файла
-        inFile.close();
+        // Вывод сообщения о завершении копирования в стандартный вывод
+        std::cout << "Копирование завершено." << std::endl;
+        // Закрытие файлов
+        sourceFile.close();
+        destinationFile.close();
     } else {
-        // Вывод сообщения об ошибке, если файл не удалось открыть
-        std::cerr << "Не удалось открыть файл." << std::endl;
+        // Вывод сообщения об ошибке в стандартный вывод ошибок
+        std::cerr << "Не удалось открыть файлы." << std::endl;
     }
 
     return 0; // Возврат нуля, обозначающего успешное завершение программы
